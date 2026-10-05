@@ -1,0 +1,180 @@
+import { ChevronDown,Download,RefreshCw } from "lucide-react";
+import { useCallback,useEffect,useMemo,useRef,useState } from "react";
+import { SearchBox } from "../components/AppShell";
+
+import { api } from "../services/api";
+import type { Order,OrderLine } from "../types";
+
+// The order API must return items to display purchased products.
+interface DisplayOrder extends Order {
+  items?: OrderLine[];
+}
+const stages = ["Accepted", "Packed", "Shipped", "Delivered"];
+
+export function OrdersPage() {
+  const requestId = useRef(0);
+  const [orders, setOrders] = useState<DisplayOrder[]>(() => api.cachedOrders() || []);
+  const [pdfError, setPdfError] = useState("");
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(() => !api.cachedOrders());
+  const [error, setError] = useState("");
+  const loadOrders = useCallback(async () => {
+    const id = ++requestId.current;
+    setLoading(true);
+    setError("");
+    try {
+      const items = await api.orders();
+      if (id === requestId.current) setOrders(items);
+    } catch {
+      if (id === requestId.current) setError("Unable to load orders. Please try again.");
+    } finally {
+      if (id === requestId.current) setLoading(false);
+    }
+  }, []);
+  useEffect(() => {
+    void loadOrders();
+    return () => { requestId.current += 1; };
+  }, [loadOrders]);
+  const filtered = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return orders.filter((order) =>
+      [order.orderNo, order.date, order.status]
+        .join(" ")
+        .toLowerCase()
+        .includes(query),
+    );
+  }, [orders, search]);
+
+  return (
+    <div className="orders-page orders-redesign">
+      <div className="orders-controls">
+        <SearchBox
+          value={search}
+          onChange={setSearch}
+          placeholder="Search orders..."
+        />
+        <header className="tracking-heading">
+          <h1>Orders ({filtered.length})</h1>
+          <button
+            type="button"
+            className="tracking-refresh"
+            onClick={() => void loadOrders()}
+            disabled={loading}
+            aria-label="Refresh orders"
+          >
+            <RefreshCw size={18} />
+          </button>
+        </header>
+      </div>
+      <div className="orders-scroll">
+        {orders.length > 0 && error && <p role="alert">{error}</p>}
+        {pdfError && <p role="alert">{pdfError}</p>}
+        {loading && !orders.length ? (
+          <p role="status">Loading orders...</p>
+        ) : error && !orders.length ? (
+          <div role="alert">
+            <p>{error}</p>
+            <button type="button" onClick={() => void loadOrders()}>
+              Try again
+            </button>
+          </div>
+        ) : !filtered.length ? (
+          <p>No orders found.</p>
+        ) : (
+          filtered.map((order) => {
+            const stage = stages.findIndex(
+              (label) =>
+                label.toLowerCase() ===
+                (order.status || "").trim().toLowerCase(),
+            );
+            const items = Array.isArray(order.items) ? order.items : [];
+            return (
+              <article className="tracking-card" key={order.id}>
+                <header className="tracking-card-header">
+                  <div>
+                    <h2>{order.orderNo}</h2>
+                  </div>
+                  <strong>RM {Number(order.total).toFixed(2)}</strong>
+                </header>
+                <div className="order-meta-row">
+                  <span>{order.date} · {order.itemCount} items</span>
+                  <button type="button" className="order-download-button"
+                    aria-label={`Download PDF for order ${order.orderNo}`}
+                    onClick={async () => {
+                      setPdfError("");
+                      try {
+                        const { downloadOrderPdf } = await import("../services/orderPdf");
+                        downloadOrderPdf(order);
+                      } catch {
+                        setPdfError("Unable to download the PDF. Please try again.");
+                      }
+                    }}
+                  >
+                    <Download size={14} aria-hidden="true" /> Download
+                  </button>
+                </div>
+                <details className="order-products">
+                  <summary className="order-products-toggle">
+                    <span>Products</span>
+                    <span className="order-products-summary-right">
+                      <span>{items.length} items</span>
+                      <ChevronDown size={18} aria-hidden="true" />
+                    </span>
+                  </summary>
+                  {items.length ? (
+                    <ul
+                      className="order-products-list"
+                      aria-label={`Products in order ${order.orderNo}`}
+                    >
+                      {items.map((item) => (
+                        <li key={item.id}>
+                          <span className="order-product-name">
+                            {item.product.name}
+                          </span>
+                          <span
+                            className="order-product-count"
+                            aria-label={`Quantity ${item.quantity}`}
+                          >
+                             {item.quantity}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="order-products-empty">
+                      Product items are not available for this order.
+                    </p>
+                  )}
+                </details>
+                <section
+                  className="tracking-section"
+                  aria-label={`Tracking for ${order.orderNo}`}
+                >
+                  <h3>Track</h3>
+                  <ol className="tracking-steps">
+                    {stages.map((label, index) => (
+                      <li
+                        key={label}
+                        className={index <= stage ? "reached" : ""}
+                        aria-current={index === stage ? "step" : undefined}
+                      >
+                        <span className="tracking-dot" aria-hidden="true" />
+                        <span>{label}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  {stage < 0 && (
+                    <p className="tracking-unavailable">
+                      Delivery tracking is not available yet.
+                    </p>
+                  )}
+                </section>
+              </article>
+            );
+          })
+        )}
+      </div>
+    </div>
+  );
+}
+

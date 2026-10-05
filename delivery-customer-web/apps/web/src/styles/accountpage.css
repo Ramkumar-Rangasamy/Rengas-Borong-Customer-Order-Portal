@@ -1,0 +1,206 @@
+.account-page.account-redesign {
+  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 0 14px;
+  color: #344054;
+  font-size: 13px;
+}
+
+.account-redesign .account-simple-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-redesign .account-simple-menu button {
+  width: 100%;
+  min-height: 56px;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 14px;
+  border: 0;
+  border-bottom: 1px solid #edf0f3;
+  padding: 12px 2px;
+  background: #fff;
+  color: #344054;
+  text-align: left;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.account-redesign .account-simple-menu svg {
+  width: 19px;
+  height: 19px;
+}
+
+.account-redesign .account-simple-menu button > svg:last-child {
+  color: #98a2b3;
+  width: 16px;
+  height: 16px;
+}
+
+.account-redesign .account-simple-menu .account-signout {
+  color: #ef4444;
+  margin-top: 18px;
+  border-bottom: 0;
+}
+
+.account-redesign .account-panel {
+  padding: 14px 0;
+}
+
+.account-redesign .account-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #000;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.account-redesign .account-back svg {
+  width: 25px;
+  height: 20px;
+}
+
+.account-redesign fieldset {
+  display: grid;
+  gap: 14px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.account-redesign label {
+  display: grid;
+  gap: 6px;
+  color: #000;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.account-redesign input,
+.account-redesign textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #e3e6ee;
+  border-radius: 8px;
+  color: #697184;
+  background: #fff;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.account-redesign textarea {
+  resize: vertical;
+}
+
+.account-redesign .account-save {
+  min-height: 46px;
+  padding: 10px;
+  border: 0;
+  border-radius: 8px;
+  background: #1111af;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.account-redesign p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.account-redesign button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.account-redesign :is(button, input, textarea, a):focus-visible {
+  outline: 2px solid #1111af;
+  outline-offset: 3px;
+}
+
+.account-redesign .account-help-simple {
+  padding: 20px 0;
+}
+
+.account-redesign .account-help-simple h2 {
+  margin: 0 0 6px;
+  color: #101828;
+  font-size: 20px;
+}
+
+.account-redesign .account-help-simple p {
+  margin: 0 0 20px;
+  color: #667085;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.account-redesign .account-help-simple a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid #edf0f3;
+  color: #1111af;
+  text-decoration: none;
+}
+
+.account-redesign .account-help-simple a > svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.account-redesign .account-help-simple a > span {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  gap: 4px;
+}
+
+.account-redesign .account-help-simple small {
+  color: #667085;
+  font-size: 14px;
+}
+
+.account-redesign .account-help-simple a strong {
+  color: #344054;
+  font-size: 14px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.account-redesign .account-help-simple a > svg:last-child {
+  width: 16px;
+  color: #98a2b3;
+}
+
+.account-redesign .account-help-simple a:hover {
+  background: #f8f9fc;
+}
+
+.account-redesign .account-help-simple .help-time {
+  margin: 22px 0 0;
+  font-size: 14px;
+}
+
+.account-redesign .help-time strong {
+  color: #344054;
+  font-weight: 600;
+}

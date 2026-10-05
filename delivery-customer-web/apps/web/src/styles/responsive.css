@@ -1,0 +1,45 @@
+/* Mobile-first: keep the same components, typography and stacked layout everywhere.
+   Wider screens only center the existing UI; no desktop redesign. */
+@media (min-width: 700px) {
+  .phone-shell {
+    --frame-width: min(540px, calc(100% - 48px));
+  }
+
+  .topbar,
+  .screen-content {
+    width: var(--frame-width);
+    margin-inline: auto;
+  }
+
+  .bottom-nav {
+    left: 50%;
+    right: auto;
+    width: var(--frame-width);
+    transform: translateX(-50%);
+  }
+}
+
+/* Keep images within their existing mobile-sized image areas. */
+.store-product-image,
+.detail-image {
+  grid-template-rows: minmax(0, 1fr);
+}
+.store-product-image .brand-logo,
+.detail-image .brand-logo {
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Reserve room for bottom navigation, including phone safe areas. */
+.page-product-detail {
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+  }
+}

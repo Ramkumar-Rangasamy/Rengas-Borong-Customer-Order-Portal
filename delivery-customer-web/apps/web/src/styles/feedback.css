@@ -1,0 +1,290 @@
+/* ==================================================
+   Feedback toast
+   ================================================== */
+
+.app-toast {
+  position: fixed;
+  z-index: 100;
+  top: max(12px, env(safe-area-inset-top));
+  left: 50%;
+  width: min(calc(100% - 24px), 440px);
+  min-height: 52px;
+  display: grid;
+  grid-template-columns: 26px 1fr 28px;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px;
+  border-radius: 14px;
+  color: #fff;
+  background: var(--brand, #1111af);
+  box-shadow: 0 14px 35px rgb(0 0 0 / 20%);
+  transform: translateX(-50%);
+}
+
+.app-toast.error {
+  background: var(--danger, #d92d20);
+}
+
+.app-toast.info {
+  background: #24568f;
+}
+
+.app-toast > span {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 18%);
+}
+
+.app-toast p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.app-toast button {
+  border: 0;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* ==================================================
+   Welcome screen
+   ================================================== */
+
+.welcome {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 4vh, 26px);
+  margin: 0;
+  padding:
+    max(20px, env(safe-area-inset-top))
+    20px
+    max(20px, env(safe-area-inset-bottom));
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(
+      circle at 50% 44%,
+      rgb(45 45 211 / 45%) 0,
+      transparent 38%
+    ),
+    linear-gradient(160deg, #1717bd 0%, #0d0da7 100%);
+  text-align: center;
+  isolation: isolate;
+}
+
+/* Bottom-left decorative circle */
+
+.welcome::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -38vw;
+  bottom: -34vw;
+  width: 100vw;
+  height: 100vw;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: curve-drift 7s ease-in-out infinite alternate;
+}
+
+/* Top-right decorative circle */
+
+.welcome::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  right: -30vw;
+  top: -42vw;
+  width: 78vw;
+  height: 78vw;
+  border: 1px solid rgb(255 255 255 / 9%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: curve-drift 9s ease-in-out -2s infinite alternate-reverse;
+}
+
+/* ==================================================
+   Welcome logo
+   ================================================== */
+
+.welcome .logo-wrap {
+  width: 180px;
+  height: 180px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin-bottom: 28px;
+}
+
+.welcome .logo-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.7px dashed #ffffff52;
+  border-radius: 50%;
+  animation: spin 18s linear infinite;
+}
+
+.welcome .brand-logo {
+  width: 128px;
+  height: 128px;
+  z-index: 2;
+  object-fit: contain;
+  padding: 8px;
+  background: #fff;
+  border-radius: 50%;
+  animation: glow 3.2s ease-in-out infinite;
+ 
+}
+
+/* ==================================================
+   Welcome label
+   ================================================== */
+
+.welcome-label {
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  color: #fff;
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 8px rgb(0 0 0 / 22%);
+}
+
+/* ==================================================
+   Progress bar
+   ================================================== */
+
+.welcome-progress {
+  position: relative;
+  z-index: 2;
+  width: min(170px, 50vw);
+  height: 6px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 20%);
+  box-shadow: 0 5px 16px rgb(0 0 0 / 14%);
+}
+
+.welcome-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgb(255 255 255 / 75%),
+    #fff
+  );
+  box-shadow: 0 0 10px rgb(255 255 255 / 65%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation-name: welcome-progress-fill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+/* ==================================================
+   General spinner class
+   ================================================== */
+
+.spinning {
+  animation: spin 0.8s linear infinite;
+}
+
+/* ==================================================
+   Animations
+   ================================================== */
+
+@keyframes welcome-progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes glow {
+  50% {
+    box-shadow:
+      0 0 0 13px #ffffff20,
+      0 18px 38px #0004;
+  }
+}
+
+@keyframes curve-drift {
+  to {
+    transform: translate(5vw, -3vw) scale(1.04);
+  }
+}
+
+/* ==================================================
+   Tablet and desktop
+   ================================================== */
+
+@media (min-width: 700px) {
+  .welcome .brand-logo {
+    width: 142px;
+    height: 142px;
+  }
+
+  .welcome .logo-wrap {
+    width: 200px;
+    height: 200px;
+  }
+
+  .welcome::before {
+    left: -28vw;
+    bottom: -62vw;
+  }
+
+  .welcome::after {
+    right: -22vw;
+    top: -55vw;
+  }
+
+  .welcome-progress {
+    width: 180px;
+  }
+}
+
+/* ==================================================
+   Reduced-motion accessibility
+   ================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome .logo-ring,
+  .welcome .brand-logo,
+  .welcome::before,
+  .welcome::after {
+    animation: none;
+  }
+
+}

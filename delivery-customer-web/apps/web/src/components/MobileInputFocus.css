@@ -1,0 +1,16 @@
+@media (max-width: 1024px) and (pointer: coarse) {
+  html body .auth-screen :is(input, textarea),
+  html body .account-page :is(input, textarea) {
+    font-size: 16px;
+  }
+
+  .mobile-input-active {
+    padding-bottom: 75vh;
+    scroll-behavior: auto;
+  }
+
+  .auth-screen.mobile-input-active .auth-card {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

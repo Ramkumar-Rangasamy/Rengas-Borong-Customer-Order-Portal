@@ -1,0 +1,492 @@
+:root {
+  --outer-background: #eaf1fa;
+  --page-background: #f6f9fd;
+  --nav-height: 72px;
+  --nav-bottom: 0px;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+  background: var(--outer-background);
+}
+
+body,
+.phone-shell,
+.home-page,
+.categories-page {
+  overflow: hidden;
+}
+
+.phone-shell {
+  height: 100dvh;
+  background: var(--page-background);
+}
+
+.screen-content:has(.home-page),
+.screen-content:has(.categories-page) {
+  height: calc(100dvh - 68px);
+  min-height: 0;
+  padding: 0 18px;
+  overflow: hidden;
+  background: var(--page-background);
+}
+
+.home-page,
+.home-controls {
+  min-width: 0;
+}
+
+.category-tiles {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.category-tiles > button {
+  flex-shrink: 0;
+}
+
+.home-page,
+.categories-page {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--page-background);
+}
+
+.home-controls,
+.categories-controls {
+  position: relative;
+  z-index: 20;
+  flex: 0 0 auto;
+  background: var(--page-background);
+}
+
+.storefront-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 12px 0 calc(var(--nav-height) + env(safe-area-inset-bottom) + 24px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.storefront-scroll::-webkit-scrollbar { display: none; }
+
+/* Keep a small gap above the fixed bottom navigation on product details. */
+.screen-content.page-product-detail {
+  height: calc(100dvh - 68px);
+  min-height: 0;
+  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 8px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.screen-content.page-product-detail::-webkit-scrollbar {
+  display: none;
+}
+
+/* Account forms can extend beyond the viewport; keep the bottom navigation fixed. */
+.screen-content.page-account {
+  height: calc(100dvh - 68px);
+  min-height: 0;
+  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 24px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.screen-content.page-account::-webkit-scrollbar {
+  display: none;
+}
+
+.home-controls {
+  margin: 0;
+  padding: 17px 0 8px;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.product-load-sentinel {
+  width: 1px;
+  height: 1px;
+  min-width: 1px;
+  min-height: 1px;
+  flex: 0 0 1px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  pointer-events: none;
+}
+
+.categories-controls {
+  padding: 17px 0 12px;
+}
+
+.home-controls .search-box,
+.categories-controls .search-box {
+  margin: 0;
+}
+
+.home-controls .category-slider {
+  margin: 14px 0 0;
+  background: var(--page-background);
+}
+
+.home-controls .chips {
+  margin: 0;
+  background: transparent;
+}
+
+.home-controls .section-title {
+  margin: 10px 0 0;
+  padding: 0;
+  background: var(--page-background);
+}
+
+.products-list,
+.categories-list {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--page-background);
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.products-list {
+  padding: 12px 0 calc(var(--nav-height) + var(--nav-bottom) + 31px);
+}
+
+.categories-list {
+  padding-bottom: calc(
+    var(--nav-height) +
+    var(--nav-bottom) +
+    env(safe-area-inset-bottom) +
+    20px
+  ) !important;
+
+  scroll-padding-bottom: calc(
+    var(--nav-height) +
+    var(--nav-bottom) +
+    env(safe-area-inset-bottom) +
+    20px
+  );
+}
+.categories-list .category-card:last-child {
+  margin-bottom: 0;
+}
+
+.products-list::-webkit-scrollbar,
+.categories-list::-webkit-scrollbar,
+.category-slider.category-slider-no-arrows .chips::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.products-list .product-card:first-child,
+.categories-list .category-card:first-child {
+  margin-top: 0;
+}
+
+.category-slider.category-slider-no-arrows {
+  display: block;
+  width: 100%;
+}
+
+.category-slider.category-slider-no-arrows .chips {
+  display: flex;
+  width: 100%;
+  padding: 2px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.categories-list .category-card {
+  width: 100%;
+  min-height: 76px;
+  margin: 0;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 20px;
+  align-items: center;
+  gap: 12px;
+  color: #111827;
+  background: #fff;
+  border: 1px solid #dfe6ef;
+  border-radius: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.category-card-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.category-card-content b {
+  color: #111;
+  font-size: 15px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.category-card-content small {
+  color: #64748b;
+  font-size: 15px;
+}
+
+.category-chevron {
+  width: 23px;
+  height: 23px;
+  color: #111;
+}
+@media (max-width: 1024px) {
+  .auth-screen {
+    box-sizing: border-box;
+    height: 100dvh;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 24px 16px;
+  }
+
+  .auth-screen .auth-card {
+    flex-shrink: 0;
+    margin: auto;
+    max-width: 100%;
+  }
+
+  .auth-screen :is(input, textarea) {
+    font-size: 16px;
+    scroll-margin-block: 24px;
+  }
+}
+@media (max-width: 480px) {
+  .phone-shell {
+    width: 100%;
+    max-width: none;
+    min-height: 100dvh;
+    box-shadow: none;
+  }
+
+  .topbar {
+    height: 64px;
+    padding: 0 16px;
+  }
+
+  .topbar h1 {
+    font-size: 14px;
+  }
+
+  .screen-content:has(.home-page),
+  .screen-content:has(.categories-page) {
+    height: calc(100dvh - 64px);
+    min-height: 0;
+    padding: 0 12px;
+  }
+
+  .screen-content.page-product-detail {
+    height: calc(100dvh - 64px);
+    padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 8px);
+  }
+
+  .screen-content.page-account {
+    height: calc(100dvh - 64px);
+    padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 24px);
+  }
+
+  .home-controls {
+    padding: 10px 0 6px;
+  }
+
+  .categories-controls {
+    padding: 10px 0;
+  }
+
+  .search-box {
+    height: 48px;
+    padding: 0 14px;
+    gap: 10px;
+    border-radius: 14px;
+  }
+
+  .search-box input {
+    min-width: 0;
+  }
+
+  .search-box svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .home-controls .category-slider {
+    margin-top: 9px;
+  }
+
+  .home-controls .chips {
+    gap: 8px;
+  }
+
+  .home-controls .chips button {
+    height: 38px;
+    padding: 0 16px;
+    font-size: 12px;
+  }
+
+  .home-controls .section-title {
+    margin-top: 7px;
+  }
+
+  .home-controls .section-title h2 {
+    font-size: 14px;
+  }
+
+  .home-controls .section-title span {
+    font-size: 12px;
+  }
+
+  .products-list {
+    padding-top: 8px;
+    padding-bottom: calc(var(--nav-height) + var(--nav-bottom) + 21px);
+  }
+
+  .categories-list .category-card:last-child {
+    margin-bottom: 0;
+  }
+
+  .product-card {
+    padding: 14px 12px;
+    margin-bottom: 14px;
+    border-radius: 17px;
+  }
+
+  .product-head {
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    gap: 8px;
+    padding-bottom: 12px;
+  }
+
+  .product-head .brand-logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .product-title {
+    min-width: 0;
+  }
+
+  .product-title h3 {
+    font-size: 14px;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .product-title p {
+    font-size: 12px;
+  }
+
+  .product-price {
+    grid-column: auto;
+    min-width: 72px;
+  }
+
+  .product-price strong {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .product-price span {
+    font-size: 12px;
+  }
+
+  .uom-label {
+    padding: 12px 0 9px;
+  }
+
+  .uom-label b {
+    font-size: 12px;
+  }
+
+  .uom-card {
+    min-width: 125px;
+    padding: 11px 7px 8px;
+  }
+
+  .categories-list .category-card {
+    min-height: 72px;
+    margin-top: 0;
+    padding: 10px 12px;
+    grid-template-columns: 48px minmax(0, 1fr) 20px;
+    border-radius: 16px;
+  }
+
+  .categories-list .brand-logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .category-chevron {
+    width: 20px;
+    height: 20px;
+  }
+
+  .bottom-nav {
+    width: 100%;
+    bottom: 0;
+    padding: 6px;
+  }
+
+  .bottom-nav a {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .product-head {
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+  }
+
+  .product-head .brand-logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .product-price {
+    grid-column: auto;
+    align-items: flex-end;
+    margin-top: 0;
+    text-align: right;
+  }
+
+  .home-controls .chips button {
+    padding: 0 12px;
+  }
+}
+
+

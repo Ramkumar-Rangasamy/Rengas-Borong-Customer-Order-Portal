@@ -1,0 +1,121 @@
+import {
+Grid3X3,
+History,
+Home,
+LogOut,
+Menu,
+Search,
+ShoppingCart,
+UserRound,
+X,
+} from "lucide-react";
+import { useState,type ReactNode } from "react";
+import { NavLink,useLocation } from "react-router-dom";
+import { useApp } from "../context/AppContext";
+import { BrandLogo } from "./BrandLogo";
+import { HeaderStatus } from "./HeaderStatus";
+
+export function SearchBox({
+  value,
+  onChange,
+  placeholder,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+}) {
+  return (
+    <label className="search-box">
+      <Search size={25} aria-hidden />
+      <input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        aria-label={placeholder}
+      />
+    </label>
+  );
+}
+export function AppShell({ children }: { children: ReactNode }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { cart, logout, profile } = useApp();
+  const { pathname } = useLocation();
+  const pageClass = pathname === "/"
+    ? "page-home"
+    : pathname === "/categories"
+      ? "page-categories"
+      : pathname.startsWith("/products/")
+        ? "page-product-detail"
+        : `page-${pathname.replace(/^\//, "") || "home"}`;
+  const count = cart.reduce((n, x) => n + x.quantity, 0);
+  const nav = [
+    { to: "/", label: "Home", Icon: Home },
+    { to: "/categories", label: "Category", Icon: Grid3X3 },
+    { to: "/cart", label: "Cart", Icon: ShoppingCart },
+    { to: "/orders", label: "Order", Icon: History },
+    { to: "/account", label: "Account", Icon: UserRound },
+  ];
+  return (
+    <div className="phone-shell">
+      <header className="topbar">
+        <button
+          className="icon-btn"
+          onClick={() => setMenuOpen(true)}
+          aria-label="Open menu"
+        >
+          <Menu />
+        </button>
+        <HeaderStatus />
+      </header>
+      <main className={`screen-content ${pageClass}`}>{children}</main>
+      <nav className="bottom-nav" aria-label="Main navigation">
+        {nav.map(({ to, label, Icon }) => (
+          <NavLink key={to} to={to} end={to === "/"}>
+            <span className="nav-icon">
+              <Icon />
+              {label === "Cart" && count > 0 && (<b aria-label={`${count} items in cart`} title={`${count} items in cart`}>{count > 99 ? "99+" : count}</b>)}
+            </span>
+            <span>{label}</span>
+          </NavLink>
+        ))}
+      </nav>
+      {menuOpen && (
+        <>
+          <button
+            className="scrim"
+            aria-label="Close menu"
+            onClick={() => setMenuOpen(false)}
+          />
+          <aside className="drawer">
+            <button
+              className="drawer-close"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Close"
+            >
+              <X />
+            </button>
+           <div className="drawer-profile">
+              <BrandLogo size={70} />
+
+              <div className="drawer-profile-info">
+                <h2>{profile?.businessName?.trim() || "RENGAS BORONG"}</h2>
+                <p>{profile?.fullName?.trim() || "Customer"}</p>
+              </div>
+            </div>
+            {nav.map(({ to, label, Icon }) => (
+              <NavLink key={to} to={to} onClick={() => setMenuOpen(false)}>
+                <Icon />
+                {label}
+              </NavLink>
+            ))}
+            <button className="logout" onClick={logout}>
+              <LogOut /> Logout
+            </button>
+          </aside>
+        </>
+      )}
+    </div>
+  );
+}
+
+
